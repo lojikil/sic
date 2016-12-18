@@ -8,8 +8,8 @@ different channel buffers, that's actually a feature.
 
 Installation
 ------------
-Edit config.mk to match your local setup. sic is installed into
-/usr/local by default.
+Edit `config.mk  to match your local setup. sic is installed into
+_/usr/local_ by default.
 
 Afterwards enter the following command to build and install sic 
 (if necessary as root):
@@ -19,4 +19,13 @@ Afterwards enter the following command to build and install sic
 
 Running sic
 -----------
-Simply invoke the 'sic' command with the required arguments.
+Simply invoke the `sic` command with the required arguments.
+
+The following arguments are accepted:
+
+- k: a `PASS`word for the remote server
+- h: the host to connect to
+- p: the port to use
+- n: the `NICK` to use
+- v: version information
+- H: the help message

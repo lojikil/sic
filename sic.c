@@ -231,7 +231,7 @@ main(int argc, char *argv[]) {
                 password = optarg;
                 break;
             case 'v':
-                eprint("sic-"VERSION", © 2005-2014 Kris Maglione, Anselm R. Garbe, Nico Golde\n");
+                eprint("sic-"VERSION", © 2005-2016 Kris Maglione, Anselm R. Garbe, Nico Golde, Stefan Edwards\n");
                 break;
             case 'H':
             default:
