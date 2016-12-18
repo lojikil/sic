@@ -11,13 +11,15 @@
 #include <netinet/in.h>
 #include <sys/socket.h>
 
-#include "arg.h"
 #include "config.h"
+
+#define nil NULL
+#define nul '\0'
 
 char *argv0;
 static char *host = DEFAULT_HOST;
 static char *port = DEFAULT_PORT;
-static char *password;
+static char *password = nil;
 static char nick[32];
 static char bufin[4096];
 static char bufout[4096];
@@ -209,29 +211,34 @@ int
 main(int argc, char *argv[]) {
 	struct timeval tv;
 	const char *user = getenv("USER");
-	int n;
+	int n = 0, ch = 0;
 	fd_set rd;
 
 	strlcpy(nick, user ? user : "unknown", sizeof nick);
-	ARGBEGIN {
-	case 'h':
-		host = EARGF(usage());
-		break;
-	case 'p':
-		port = EARGF(usage());
-		break;
-	case 'n':
-		strlcpy(nick, EARGF(usage()), sizeof nick);
-		break;
-	case 'k':
-		password = EARGF(usage());
-		break;
-	case 'v':
-		eprint("sic-"VERSION", © 2005-2014 Kris Maglione, Anselm R. Garbe, Nico Golde\n");
-		break;
-	default:
-		usage();
-	} ARGEND;
+
+    while((ch = getopt(argc, argv, "h:p:n:k:vH")) != -1) {
+        switch(ch) {
+            case 'h':
+                host = optarg;
+                break;
+            case 'p':
+                port = optarg;
+                break;
+            case 'n':
+                strlcpy(nick, optarg, sizeof(nick));
+                break;
+            case 'k':
+                password = optarg;
+                break;
+            case 'v':
+		        eprint("sic-"VERSION", © 2005-2014 Kris Maglione, Anselm R. Garbe, Nico Golde\n");
+		        break;
+            case 'H':
+            default:
+                usage();
+                break;
+        }
+    }
 
 	/* init */
 	srv = fdopen(dial(host, port), "r+");
