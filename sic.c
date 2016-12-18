@@ -244,6 +244,7 @@ main(int argc, char *argv[]) {
     srv = fdopen(dial(host, port), "r+");
     if (!srv)
         eprint("fdopen:");
+
     /* login */
     if(password)
         sout("PASS %s", password);
@@ -253,10 +254,18 @@ main(int argc, char *argv[]) {
     setbuf(stdout, NULL);
     setbuf(srv, NULL);
     setbuf(stdin, NULL);
-    for(;;) { /* main loop */
+
+    /* main loop */
+    for(;;) {
         FD_ZERO(&rd);
         FD_SET(0, &rd);
         FD_SET(fileno(srv), &rd);
+
+        /* huh, did not know that:
+         * it's good to reinit these
+         * values prior to each call
+         * to select.
+         */
         tv.tv_sec = 120;
         tv.tv_usec = 0;
         n = select(fileno(srv) + 1, &rd, 0, 0, &tv);
